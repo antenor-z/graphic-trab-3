@@ -21,27 +21,20 @@ em uma cena 3D.
 
 \section {Cena Base}
 Para a cena utilizou-se uma versão com leves modificações a partir da tarefa 2.1. 
-A cena base é a seguinte:
-
-\begin{figure}[H]
-  \begin{center}
-  \includegraphics[width=0.8\linewidth]{base-scene.png}
-  \caption{Cena base}
-  \label{fig:cena-base}
-  \end{center}
-\end{figure}
 
 Para este trabalho o cubo cinza foi retirado para ser substituído por um quad 
-que fará papel de uma superfície plana para o refletor.
+que fará papel de uma superfície plana para o refletor e como anteparo para a 
+projeção das sombras.
 
 O seguinte grafo de cena foi usado:
 
 \begin{verbatim}
   Node::Make(shader,
       {
-      Node::Make(trCube2,{yellow},{cube}),
-      Node::Make(trSphere1,{green},{sphere}),
-      Node::Make(trSphere2,{red},{sphere}),
+          Node::Make(trCube2,{yellow},{cube}),
+          Node::Make(trSphere1,{green},{sphere}),
+          Node::Make(trSphere2,{red},{sphere}),
+          Node::Make(trCube3,{red},{cube}),
       }
   );
 \end{verbatim}

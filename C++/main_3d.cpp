@@ -56,7 +56,7 @@ static void initialize (void)
   light->SetSpecular(0.8f, 0.8f, 0.8f);
 
   ClipPlanePtr clipplane = ClipPlane::Make("clipplane");
-  clipplane->AddPlane(0.0f,1.0f,0.0f,0.0f);
+  clipplane->AddPlane(0.0f,-1.0f,0.0f,0.5f);
 
 
   MaterialPtr white = Material::Make(1.0f,1.0f,1.0f);
@@ -73,12 +73,16 @@ static void initialize (void)
   TransformPtr trCube2 = Transform::Make();
   trCube2->Scale(1.0f,0.4f,1.0f);
   trCube2->Translate(0.0f,0.0f,0.0f);
+  TransformPtr trCube3 = Transform::Make();
+  trCube3->Scale(0.4f,0.4f,0.4f);
+  trCube3->Translate(-2.5f,0.4f,-2.5f);
+  trCube3->Rotate(45.0f,1.0f,1.0f,1.0f);
   TransformPtr trSphere1 = Transform::Make();
   trSphere1->Scale(0.2f,0.2f,0.2f);
-  trSphere1->Translate(0.3f,3.0f,0.3f);
+  trSphere1->Translate(0.0f,3.0f,0.0f);
   TransformPtr trSphere2 = Transform::Make();
   trSphere2->Scale(0.4f,0.4f,0.4f);
-  trSphere2->Translate(3.0f,1.0f,3.0f);
+  trSphere2->Translate(2.5f,1.0f,2.5f);
 
 TransformPtr trUnit = Transform::Make();
   trUnit->Scale(0.3f,0.3f,0.3f);
@@ -104,10 +108,11 @@ TransformPtr trUnit = Transform::Make();
      Node::Make(trCube2,{yellow},{cube}),
      Node::Make(trSphere1,{green},{sphere}),
      Node::Make(trSphere2,{red},{sphere}),
+     Node::Make(trCube3,{red},{cube}),
     }
   );
   scene = Scene::Make(root);
-  reflector = Scene::Make(Node::Make(shader ,trCube1 ,{clipplane, transparent},{quad}));
+  reflector = Scene::Make(Node::Make(shader ,trCube1 ,{transparent},{quad}));
 
   
 }
