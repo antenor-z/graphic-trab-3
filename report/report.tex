@@ -41,20 +41,20 @@ O seguinte grafo de cena foi usado:
 
 \section {Técnicas de Renderização}
 
-Entre as opções, foi escolhido a técnica de reflexão planar e de sombra planar.
+Entre as opções, foi escolhida a técnica de reflexão planar e de sombra planar.
 
 \subsection {Técnica: reflexão planar}
 
 Como dito na seção anterior foi usado um quad para receber a reflexão que é 
-simplesmente a repetição da cena em $$y > 0$$ em $$y < 0$$ com a componente y
-com sinal trocado. Usando o transformador de escala conseguimos fazer esta 
+simplesmente a repetição da cena em $y > 0$ em $y < 0$ com a componente y
+com sinal trocado. Usando o transformador de escala, conseguimos fazer esta 
 inversão:
 
 \begin{verbatim}
 trf->Scale(1.0f,-1.0f,1.0f);
 \end{verbatim}
 
-Todavia, se apenas isto for feito, a reflexão irá "vazar" para fora da superficie
+Todavia, se apenas isto for feito, a reflexão irá "vazar" para fora da superfície
 reflexiva.
 
 \begin{figure}[H]
@@ -65,8 +65,8 @@ reflexiva.
   \end{center}
 \end{figure}
 
-Isto é resolvido aplicado um stencil na superficie reflexiva e informado ao 
-ao OpenGL não renderizar a reflexão que esteja fora desta máscara.
+Isto é resolvido aplicando um stencil na superficie reflexiva e informando ao 
+OpenGL não renderizar a reflexão que esteja fora desta máscara.
 
 \begin{figure}[H]
   \begin{center}
@@ -88,24 +88,27 @@ a ausência de qualquer objeto.
   \end{center}
 \end{figure}
 
-Para resolver isso usamos um plano de corte para mostrar a cena refletida apenas
+Para resolver isso, usamos um plano de corte para mostrar a cena refletida apenas
 acima do plano de corte.
 
 
 \subsection {Técnica: sombra planar}
 
-Para a sobra planar aplicamos a geometria em uma matriz de projeção que "achata"
-os objetos de cena em uma superficie 2D. Esta matriz de projeção por considerar a posição da luz
+Para a sombra planar, aplicamos a geometria em uma matriz de projeção que "achata"
+os objetos de cena em uma superfície 2D. Esta matriz de projeção, por considerar a posição da luz,
 consegue simular corretamente como é a sombra projetada por esta luz.
 
 \subsection{Matriz de projeção}
 
-Sendo n o vetor de quatro índices (1x4) represetando a normal ao plano onde a sombra deve
-ser exibida com os três primeiros índices igual as componentes x, y e z e o último
+\begin{itemize}
+\item Seja n o vetor de quatro índices (1x4), representando a normal ao plano onde a sombra deve
+ser exibida com os três primeiros índices iguais às componentes x, y e z e o último
 índice sendo fixo igual à um.
 
-Sendo, l o vetor também de quatro índices com a posição x, y, z da fonte de luz 
+\item Seja, l o vetor também de quatro índices com a posição x, y, z da fonte de luz 
 e o quarto índice também igual à um.
+
+\end{itemize}
 
 Os pontos de geometria, quando forem multiplicados pela matriz:
 
@@ -120,17 +123,17 @@ Os pontos de geometria, quando forem multiplicados pela matriz:
 
 Serão transformados em pontos que formam a sombra planar.
 
-\subsection{Algorítmo}
+\subsection{Algoritmo}
 Para renderizar a cena, faz-se quatro passadas. Inicialmente é limpado o stencil 
-porque se não teríamos um efeito de "pintura" já que as marcações do stencil 
+porque se não teríamos um efeito de "pintura", já que as marcações do stencil 
 iriam se acumular de quadro a quadro.
 
 \begin{verbatim}
 glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 \end{verbatim}
 
-Modifiquei o shader para que fosse possível renderizar a cena apenas com a luz 
-ambiente caso uma variável fosse verdadeira.
+Foi modificado o shader para que fosse possível renderizar a cena apenas com a 
+luz ambiente caso uma variável fosse verdadeira.
 
 \begin{verbatim}
 if (amb_only) {
@@ -141,7 +144,7 @@ else {
 }
 \end{verbatim}
 
-Na primeira passada é renderizado o chão apenas com a luz ambiente.
+Na primeira passada, é renderizado o chão apenas com a luz ambiente.
 
 \begin{verbatim}
 amb_only->SetValue(true);
@@ -150,7 +153,7 @@ amb_only->SetValue(false);
 \end{verbatim}
 
 
-Na segunda passada a geometria da cena é multiplicada pela matriz de sombra e o 
+Na segunda passada, a geometria da cena é multiplicada pela matriz de sombra e o 
 stencil é marcado com a resultante. Esta marcação é a sombra.
 
 \begin{verbatim}
@@ -167,8 +170,8 @@ sceneRoot->Render(camera);
 sceneRoot->GetRoot()->SetTransform(nullptr);
 \end{verbatim}
 
-Na terceira passada o chão é desenhado normalmente, exceto pelas áreas onde o 
-stencil foi marcado. Nestas áreas apenas a luz ambiente do passo anterior irá 
+Na terceira passada, o chão é desenhado normalmente, exceto pelas áreas onde o 
+stencil foi marcado. Nestas áreas, apenas a luz ambiente do passo anterior irá 
 aparecer.
 
 \begin{verbatim}
@@ -208,6 +211,6 @@ sceneRoot->Render(camera);
 \section {Resultados}
 
 Além das capturas de tela deste relatório, um vídeo de demostração do funcionamento 
-foi incluído: arquivo "demo.mp4".
+foi incluído no arquivo "demo.mp4".
 
 \end{document}
