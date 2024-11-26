@@ -83,13 +83,29 @@ a ausência de qualquer objeto.
 \begin{figure}[H]
   \begin{center}
   \includegraphics[width=0.8\linewidth]{before-cut-plan.png}
-  \caption{Antes do plano de corte}
+  \caption{Cena refletida aparecendo}
   \label{fig:vaz}
   \end{center}
 \end{figure}
 
-Para resolver isso, usamos um plano de corte para mostrar a cena refletida apenas
-acima do plano de corte.
+Para resolver isso, normalmente é usado um plano de corte para mostrar a cena refletida apenas
+acima do plano de corte. Porém não foi conseguido realizar isto. Para contornar isto, na função
+de display é testado se, pela matriz de visão, a câmera está no lado de cima do
+refletor.
+Apenas se este for o caso, a cena refletida aparece.
+
+\begin{verbatim}
+if (camera->GetViewMatrix()[1][2] > 0) {
+  ...
+\end{verbatim}
+
+\begin{figure}[H]
+  \begin{center}
+  \includegraphics[width=0.8\linewidth]{with-condition.png}
+  \caption{Cena refletida não aparecendo}
+  \label{fig:vaz}
+  \end{center}
+\end{figure}
 
 
 \subsection {Técnica: sombra planar}

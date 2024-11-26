@@ -72,7 +72,7 @@ static void initialize (void)
   trCube1->Scale(3.0f,3.0f,3.0f);
   TransformPtr trCube2 = Transform::Make();
   trCube2->Scale(1.0f,0.4f,1.0f);
-  trCube2->Translate(0.0f,0.0f,0.0f);
+  trCube2->Translate(0.0f,0.001f,0.0f);
   TransformPtr trCube3 = Transform::Make();
   trCube3->Scale(0.4f,0.4f,0.4f);
   trCube3->Translate(-2.5f,0.4f,-2.5f);
@@ -120,36 +120,41 @@ TransformPtr trUnit = Transform::Make();
 static void display (GLFWwindow* win)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    // refletor no stencil
-    glEnable(GL_STENCIL_TEST);
-    glStencilFunc(GL_NEVER , 1, 0xFFFF);
-    glStencilOp(GL_REPLACE , GL_REPLACE , GL_REPLACE);
-    reflector->Render(camera);
-    // desenha cena refletida
-    glStencilFunc(GL_EQUAL , 1, 0xFFFF);
-    glStencilOp(GL_KEEP , GL_KEEP , GL_KEEP);
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    // desenha cena refletida
-    NodePtr root = scene->GetRoot();
-    TransformPtr trf = Transform::Make();
-    trf->Scale(1.0f,-1.0f,1.0f);
-    root->SetTransform(trf);
-    glFrontFace(GL_CW);
-    // invert front face incidence
-    scene->Render(camera);
-    glFrontFace(GL_CCW);
-    // restore front face incidence
-    root->SetTransform(nullptr);
-    // desenha cena
-    scene->Render(camera);
-    // desenha refletor
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA ,GL_ONE_MINUS_SRC_ALPHA);
-    reflector->Render(camera);
-    glDisable(GL_BLEND);
 
-    glDisable(GL_STENCIL_TEST);
+    if (camera->GetViewMatrix()[1][2] > 0) { // Estamos vendo de cima?
+        // refletor no stencil
+        glEnable(GL_STENCIL_TEST);
+        glStencilFunc(GL_NEVER , 1, 0xFFFF);
+        glStencilOp(GL_REPLACE , GL_REPLACE , GL_REPLACE);
+        reflector->Render(camera);
+        // desenha cena refletida
+        glStencilFunc(GL_EQUAL , 1, 0xFFFF);
+        glStencilOp(GL_KEEP , GL_KEEP , GL_KEEP);
+
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        // desenha cena refletida
+        NodePtr root = scene->GetRoot();
+        TransformPtr trf = Transform::Make();
+        trf->Scale(1.0f,-1.0f,1.0f);
+        root->SetTransform(trf);
+        glFrontFace(GL_CW);
+        // invert front face incidence
+        scene->Render(camera);
+        glFrontFace(GL_CCW);
+        // restore front face incidence
+        root->SetTransform(nullptr);
+        // desenha cena
+        scene->Render(camera);
+        // desenha refletor
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA ,GL_ONE_MINUS_SRC_ALPHA);
+        reflector->Render(camera);
+        glDisable(GL_BLEND);
+
+        glDisable(GL_STENCIL_TEST);
+
+    }
     // desenha cena
     scene->Render(camera);
     // desenha refletor

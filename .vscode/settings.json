@@ -73,6 +73,9 @@
         "valarray": "cpp",
         "variant": "cpp",
         "material.h": "c",
-        "error.h": "c"
+        "error.h": "c",
+        "charconv": "cpp",
+        "span": "cpp",
+        "format": "cpp"
     }
 }
