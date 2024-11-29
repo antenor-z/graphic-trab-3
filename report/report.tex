@@ -45,10 +45,10 @@ Entre as opções, foi escolhida a técnica de reflexão planar e de sombra plan
 
 \subsection {Técnica: reflexão planar}
 
-Como dito na seção anterior foi usado um quad para receber a reflexão que é 
-simplesmente a repetição da cena em $y > 0$ em $y < 0$ com a componente y
+Como dito na seção anterior foi usado um quad para "receber" a reflexão que é 
+simplesmente a repetição da cena de $y > 0$ em $y < 0$ com a componente y
 com sinal trocado. Usando o transformador de escala, conseguimos fazer esta 
-inversão:
+inversão vertical:
 
 \begin{verbatim}
 trf->Scale(1.0f,-1.0f,1.0f);
@@ -66,7 +66,7 @@ reflexiva.
 \end{figure}
 
 Isto é resolvido aplicando um stencil na superficie reflexiva e informando ao 
-OpenGL não renderizar a reflexão que esteja fora desta máscara.
+OpenGL não renderizar a cena que esteja fora desta máscara.
 
 \begin{figure}[H]
   \begin{center}
@@ -83,14 +83,14 @@ a ausência de qualquer objeto.
 \begin{figure}[H]
   \begin{center}
   \includegraphics[width=0.8\linewidth]{before-cut-plan.png}
-  \caption{Cena refletida aparecendo}
+  \caption{Cena refletida aparecendo do outro lado}
   \label{fig:vaz}
   \end{center}
 \end{figure}
 
 Para resolver isso, normalmente é usado um plano de corte para mostrar a cena refletida apenas
-acima do plano de corte. Porém não foi conseguido realizar isto. Para contornar isto, na função
-de display é testado se, pela matriz de visão, a câmera está no lado de cima do
+acima deste plano. Porém não foi conseguido realizar isto. Para contornar, na função
+de display é testado se a câmera está no lado de cima do
 refletor.
 Apenas se este for o caso, a cena refletida aparece.
 
@@ -102,7 +102,7 @@ if (camera->GetViewMatrix()[1][2] > 0) {
 \begin{figure}[H]
   \begin{center}
   \includegraphics[width=0.8\linewidth]{with-condition.png}
-  \caption{Cena refletida não aparecendo}
+  \caption{Cena corrigida}
   \label{fig:vaz}
   \end{center}
 \end{figure}
@@ -114,7 +114,7 @@ Para a sombra planar, aplicamos a geometria em uma matriz de projeção que "ach
 os objetos de cena em uma superfície 2D. Esta matriz de projeção, por considerar a posição da luz,
 consegue simular corretamente como é a sombra projetada por esta luz.
 
-\subsection{Matriz de projeção}
+\subsubsection{Matriz de projeção}
 
 \begin{itemize}
 \item Seja n o vetor de quatro índices (1x4), representando a normal ao plano onde a sombra deve
@@ -139,7 +139,7 @@ Os pontos de geometria, quando forem multiplicados pela matriz:
 
 Serão transformados em pontos que formam a sombra planar.
 
-\subsection{Algoritmo}
+\subsubsection{Algoritmo}
 Para renderizar a cena, faz-se quatro passadas. Inicialmente é limpado o stencil 
 porque se não teríamos um efeito de "pintura", já que as marcações do stencil 
 iriam se acumular de quadro a quadro.
