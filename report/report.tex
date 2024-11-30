@@ -193,8 +193,7 @@ sceneRoot->GetRoot()->SetTransform(nullptr);
 \end{verbatim}
 
 Na terceira passada, o chão é desenhado normalmente, exceto pelas áreas onde o 
-stencil foi marcado. Nestas áreas, apenas a luz ambiente do passo anterior irá 
-aparecer.
+stencil foi marcado. Nestas áreas, apenas a luz ambiente da primeira passada.
 
 \begin{verbatim}
 glStencilFunc(GL_EQUAL , 0, 0xFFFF);
