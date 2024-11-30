@@ -117,19 +117,20 @@ consegue simular corretamente como é a sombra projetada por esta luz.
 \subsubsection{Matriz de projeção}
 
 \begin{itemize}
-\item Seja n o vetor de quatro índices (1x4), representando a normal ao plano onde a sombra deve
-ser exibida com os três primeiros índices iguais às componentes x, y e z e o último
-índice sendo fixo igual à um.
+\item Seja n o vetor $[n_x n_y n_z]$, representando a normal ao plano onde a sombra deve
+ser exibida com os índices iguais às componentes x, y e z.
 
-\item Seja, l o vetor também de quatro índices com a posição x, y, z da fonte de luz 
-e o quarto índice também igual à um.
+\item Seja, l o vetor $[l_x l_y l_z ]$ com a posição da fonte de luz.
+
+\item Seja p o vetor $[p_x p_y p_z 1]$ com a posição de um ponto na geometria e
+o último índice sempre igual a um.
 
 \end{itemize}
 
-Os pontos de geometria, quando forem multiplicados pela matriz:
+Cada ponto da geometria representado pelo vetor quando for multiplicado pela matriz M.
 
 \[
-\begin{bmatrix}
+M = \begin{bmatrix}
   nl + n_{w} - l_{x}n_{x} & -l_{x}n_{y} & -l_{x}n_{z} & -l_{x}n_{w} \\
   -l_{y}n_{x} & nl + n_{w} - l_{y}n_{y} & -l_{y}n_{z} & -l_{y}n_{w} \\
   -l_{z}n_{x} & -l_{z}n_{y} & nl + n_{w} - l_{z}n_{z} & -l_{z}n_{w} \\
@@ -137,7 +138,12 @@ Os pontos de geometria, quando forem multiplicados pela matriz:
 \end{bmatrix}
 \]
 
-Serão transformados em pontos que formam a sombra planar.
+Será transformado em $p'$, um vetor que representa um ponto no plano da sombra.
+
+$$p' = M p$$
+
+Fazendo esta operação com todos os pontos da geometria, teremos todos os pontos
+da sombra.
 
 \subsubsection{Algoritmo}
 Para renderizar a cena, faz-se quatro passadas. Inicialmente é limpado o stencil 
