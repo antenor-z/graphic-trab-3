@@ -166,7 +166,8 @@ else {
 }
 \end{verbatim}
 
-Na primeira passada, é renderizado o chão apenas com a luz ambiente.
+Na primeira passada, é renderizado o chão apenas com a luz ambiente. Isto será
+a cor da sombra.
 
 \begin{verbatim}
 amb_only->SetValue(true);
@@ -185,7 +186,6 @@ glStencilOp(GL_REPLACE , GL_REPLACE , GL_REPLACE);
 glm::mat4 sm = shadowMatrix(glm::vec4(0.0f,0.0f,1.0f,1.0f),glm::vec4(2.0f, 2.0f, 
 10.0f, 1.0f));
 TransformPtr tr = Transform::Make();
-//tr->LoadIdentity();
 tr->MultMatrix(sm);
 sceneRoot->GetRoot()->SetTransform(tr);
 sceneRoot->Render(camera);
